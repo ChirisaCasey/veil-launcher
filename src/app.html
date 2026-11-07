@@ -1,10 +1,21 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" href="%sveltekit.assets%/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Tauri + SvelteKit + Typescript App</title>
+    <meta name="color-scheme" content="dark light" />
+    <title>Veil Launcher</title>
+    <style>
+      /* Prevent a white flash before the app stylesheet loads. Matches the dark theme background. */
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        background: #0b0b12;
+        color: #ececf3;
+      }
+    </style>
     %sveltekit.head%
   </head>
   <body data-sveltekit-preload-data="hover">

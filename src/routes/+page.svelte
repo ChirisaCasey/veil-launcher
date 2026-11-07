@@ -1,156 +1,152 @@
 <script lang="ts">
-  import { invoke } from "@tauri-apps/api/core";
+  import { onMount } from "svelte";
+  import { fade, fly } from "svelte/transition";
+  import { cubicOut } from "svelte/easing";
+  import { initApp, nav, theme } from "$lib/stores";
+  import { VIEWS, type View } from "$lib/stores/navigation.svelte";
+  import { ms } from "$lib/motion";
+  import Sidebar from "$lib/components/Sidebar.svelte";
+  import TitleBar from "$lib/components/TitleBar.svelte";
+  import Toasts from "$lib/components/Toasts.svelte";
+  import Home from "$lib/views/Home.svelte";
+  import Videos from "$lib/views/Videos.svelte";
+  import Detection from "$lib/views/Detection.svelte";
+  import Settings from "$lib/views/Settings.svelte";
+  import About from "$lib/views/About.svelte";
 
-  let name = $state("");
-  let greetMsg = $state("");
+  const TITLES: Record<View, string> = {
+    home: "Home",
+    videos: "Videos",
+    detection: "Detection",
+    settings: "Settings",
+    about: "About",
+  };
 
-  async function greet(event: Event) {
-    event.preventDefault();
-    // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-    greetMsg = await invoke("greet", { name });
+  let scroller = $state<HTMLElement>();
+
+  // Theme: resolved mode + accent tokens written to <html>, live.
+  $effect(() => {
+    theme.apply();
+  });
+
+  onMount(() => {
+    // Deep link (e.g. index.html#settings) — handy for previews.
+    if (location.hash.length > 1) nav.go(location.hash.slice(1));
+    let cleanup: (() => void) | undefined;
+    let disposed = false;
+    void initApp().then((c) => {
+      if (disposed) c();
+      else cleanup = c;
+    });
+    return () => {
+      disposed = true;
+      cleanup?.();
+    };
+  });
+
+  // Each view starts at the top.
+  $effect(() => {
+    void nav.view;
+    if (scroller) scroller.scrollTop = 0;
+  });
+
+  function isEditable(el: EventTarget | null): boolean {
+    return el instanceof HTMLElement && !!el.closest('input, textarea, select, [contenteditable="true"]');
+  }
+
+  function oncontextmenu(e: MouseEvent) {
+    // Keep the native menu only where it's useful (text fields, copyable paths). Shift+right-click in dev for devtools.
+    if (import.meta.env.DEV && e.shiftKey) return;
+    const t = e.target;
+    if (isEditable(t)) return;
+    if (t instanceof HTMLElement && t.closest(".selectable") && window.getSelection()?.toString()) return;
+    e.preventDefault();
+  }
+
+  function onkeydown(e: KeyboardEvent) {
+    if (!e.ctrlKey || e.altKey || e.shiftKey || e.metaKey || isEditable(e.target)) return;
+    const n = Number(e.key);
+    if (n >= 1 && n <= VIEWS.length) {
+      e.preventDefault();
+      nav.go(VIEWS[n - 1]);
+    }
   }
 </script>
 
-<main class="container">
-  <h1>Welcome to Tauri + Svelte</h1>
+<svelte:window {oncontextmenu} {onkeydown} />
 
-  <div class="row">
-    <a href="https://vite.dev" target="_blank">
-      <img src="/vite.svg" class="logo vite" alt="Vite Logo" />
-    </a>
-    <a href="https://tauri.app" target="_blank">
-      <img src="/tauri.svg" class="logo tauri" alt="Tauri Logo" />
-    </a>
-    <a href="https://svelte.dev" target="_blank">
-      <img src="/svelte.svg" class="logo svelte-kit" alt="SvelteKit Logo" />
-    </a>
+<div class="app">
+  <Sidebar />
+  <div class="main">
+    <span class="backdrop-glow" aria-hidden="true"></span>
+    <TitleBar title={TITLES[nav.view]} />
+    <main class="content" bind:this={scroller}>
+      <div class="views">
+        {#key nav.view}
+          <div
+            class="view"
+            in:fly={{ y: 12 * nav.direction, duration: ms(320), delay: ms(70), easing: cubicOut }}
+            out:fade={{ duration: ms(90) }}
+          >
+            {#if nav.view === "home"}
+              <Home />
+            {:else if nav.view === "videos"}
+              <Videos />
+            {:else if nav.view === "detection"}
+              <Detection />
+            {:else if nav.view === "settings"}
+              <Settings />
+            {:else}
+              <About />
+            {/if}
+          </div>
+        {/key}
+      </div>
+    </main>
   </div>
-  <p>Click on the Tauri, Vite, and SvelteKit logos to learn more.</p>
+</div>
 
-  <form class="row" onsubmit={greet}>
-    <input id="greet-input" placeholder="Enter a name..." bind:value={name} />
-    <button type="submit">Greet</button>
-  </form>
-  <p>{greetMsg}</p>
-</main>
+<Toasts />
 
 <style>
-.logo.vite:hover {
-  filter: drop-shadow(0 0 2em #747bff);
-}
-
-.logo.svelte-kit:hover {
-  filter: drop-shadow(0 0 2em #ff3e00);
-}
-
-:root {
-  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
-  font-size: 16px;
-  line-height: 24px;
-  font-weight: 400;
-
-  color: #0f0f0f;
-  background-color: #f6f6f6;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
-}
-
-.container {
-  margin: 0;
-  padding-top: 10vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: center;
-}
-
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: 0.75s;
-}
-
-.logo.tauri:hover {
-  filter: drop-shadow(0 0 2em #24c8db);
-}
-
-.row {
-  display: flex;
-  justify-content: center;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-
-a:hover {
-  color: #535bf2;
-}
-
-h1 {
-  text-align: center;
-}
-
-input,
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  color: #0f0f0f;
-  background-color: #ffffff;
-  transition: border-color 0.25s;
-  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
-}
-
-button {
-  cursor: pointer;
-}
-
-button:hover {
-  border-color: #396cd8;
-}
-button:active {
-  border-color: #396cd8;
-  background-color: #e8e8e8;
-}
-
-input,
-button {
-  outline: none;
-}
-
-#greet-input {
-  margin-right: 5px;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    color: #f6f6f6;
-    background-color: #2f2f2f;
+  .app {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
   }
-
-  a:hover {
-    color: #24c8db;
+  .main {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    isolation: isolate;
   }
-
-  input,
-  button {
-    color: #ffffff;
-    background-color: #0f0f0f98;
+  .backdrop-glow {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      radial-gradient(900px 420px at 85% -10%, var(--bg-glow), transparent 70%),
+      radial-gradient(600px 300px at 0% 110%, color-mix(in srgb, var(--accent) 5%, transparent), transparent 70%);
+    transition: background 0.4s ease;
   }
-  button:active {
-    background-color: #0f0f0f69;
+  .content {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-gutter: stable;
   }
-}
-
+  .views {
+    display: grid;
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 8px 32px 36px;
+  }
+  .view {
+    grid-area: 1 / 1;
+    min-width: 0;
+  }
 </style>
