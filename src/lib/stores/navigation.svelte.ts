@@ -1,8 +1,8 @@
 import { EVENTS, on } from "$lib/api";
 
-export type View = "home" | "videos" | "detection" | "settings" | "about";
+export type View = "home" | "videos" | "detection" | "settings";
 
-export const VIEWS: View[] = ["home", "videos", "detection", "settings", "about"];
+export const VIEWS: View[] = ["home", "videos", "detection", "settings"];
 
 /** Route names the tray (or anything else) may send, mapped to views. */
 const ALIASES: Record<string, View> = {
@@ -17,7 +17,7 @@ const ALIASES: Record<string, View> = {
   detect: "detection",
   settings: "settings",
   preferences: "settings",
-  about: "about",
+  about: "settings",
 };
 
 class NavigationStore {

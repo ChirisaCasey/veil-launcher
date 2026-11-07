@@ -3,24 +3,16 @@
   import { fade, fly } from "svelte/transition";
   import { cubicOut } from "svelte/easing";
   import { initApp, nav, theme } from "$lib/stores";
-  import { VIEWS, type View } from "$lib/stores/navigation.svelte";
+  import { VIEWS } from "$lib/stores/navigation.svelte";
   import { ms } from "$lib/motion";
   import Sidebar from "$lib/components/Sidebar.svelte";
   import TitleBar from "$lib/components/TitleBar.svelte";
   import Toasts from "$lib/components/Toasts.svelte";
+  import Backdrop from "$lib/components/Backdrop.svelte";
   import Home from "$lib/views/Home.svelte";
   import Videos from "$lib/views/Videos.svelte";
   import Detection from "$lib/views/Detection.svelte";
   import Settings from "$lib/views/Settings.svelte";
-  import About from "$lib/views/About.svelte";
-
-  const TITLES: Record<View, string> = {
-    home: "Home",
-    videos: "Videos",
-    detection: "Detection",
-    settings: "Settings",
-    about: "About",
-  };
 
   let scroller = $state<HTMLElement>();
 
@@ -78,8 +70,8 @@
 <div class="app">
   <Sidebar />
   <div class="main">
-    <span class="backdrop-glow" aria-hidden="true"></span>
-    <TitleBar title={TITLES[nav.view]} />
+    <Backdrop />
+    <TitleBar />
     <main class="content" bind:this={scroller}>
       <div class="views">
         {#key nav.view}
@@ -94,10 +86,8 @@
               <Videos />
             {:else if nav.view === "detection"}
               <Detection />
-            {:else if nav.view === "settings"}
-              <Settings />
             {:else}
-              <About />
+              <Settings />
             {/if}
           </div>
         {/key}
@@ -121,13 +111,6 @@
     display: flex;
     flex-direction: column;
     isolation: isolate;
-  }
-  .backdrop-glow {
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-    background: none;
   }
   .content {
     flex: 1;

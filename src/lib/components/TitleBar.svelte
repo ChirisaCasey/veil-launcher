@@ -4,7 +4,6 @@
   import { minimizeWindow, toggleMaximizeWindow, watchMaximized } from "$lib/platform";
   import { toasts } from "$lib/stores";
 
-  let { title }: { title: string } = $props();
   let maximized = $state(false);
 
   onMount(() => watchMaximized((m) => (maximized = m)));
@@ -20,7 +19,6 @@
 
 <div class="titlebar" data-tauri-drag-region>
   <div class="title" data-tauri-drag-region>
-    <span data-tauri-drag-region>{title}</span>
     {#if !isTauri}
       <span class="chip info preview" data-tauri-drag-region title="Running in a browser with a simulated backend">Browser preview</span>
     {/if}

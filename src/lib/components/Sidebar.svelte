@@ -5,21 +5,30 @@
   import Film from "@lucide/svelte/icons/film";
   import ScanSearch from "@lucide/svelte/icons/scan-search";
   import Settings from "@lucide/svelte/icons/settings";
-  import Info from "@lucide/svelte/icons/info";
+  import SquareTerminal from "@lucide/svelte/icons/square-terminal";
   import Logo from "./Logo.svelte";
   import StatusOrb from "./StatusOrb.svelte";
-  import { nav, settings, status, videos } from "$lib/stores";
+  import { nav, settings, status, toasts, videos } from "$lib/stores";
   import type { View } from "$lib/stores/navigation.svelte";
   import { PHASES } from "$lib/format";
   import { prefersReducedMotion } from "$lib/motion";
+  import { REPO_URL, VAL_PATCHER_URL } from "$lib/constants";
+  import { openExternal } from "$lib/platform";
 
   const ITEMS: { view: View; label: string; icon: LucideIcon; hint: string }[] = [
     { view: "home", label: "Home", icon: House, hint: "Ctrl+1" },
     { view: "videos", label: "Videos", icon: Film, hint: "Ctrl+2" },
     { view: "detection", label: "Detection", icon: ScanSearch, hint: "Ctrl+3" },
     { view: "settings", label: "Settings", icon: Settings, hint: "Ctrl+4" },
-    { view: "about", label: "About", icon: Info, hint: "Ctrl+5" },
   ];
+
+  async function open(url: string) {
+    try {
+      await openExternal(url);
+    } catch (e) {
+      toasts.error(e, "Couldn't open link");
+    }
+  }
 
   const ITEM_STEP = 38; // item height 36 + gap 2
   const activeIndex = $derived(ITEMS.findIndex((i) => i.view === nav.view));
@@ -76,6 +85,26 @@
       </div>
     </div>
   </button>
+
+  <div class="links">
+    <button type="button" class="link" aria-label="Veil Launcher on GitHub" onclick={() => open(REPO_URL)}>
+      <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" fill="currentColor">
+        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
+      </svg>
+      <span class="tip" role="tooltip">
+        <strong>Veil Launcher on GitHub</strong>
+        <span>Source code, releases and issues</span>
+      </span>
+    </button>
+    <button type="button" class="link" aria-label="Val-Patcher, the lite .bat version" onclick={() => open(VAL_PATCHER_URL)}>
+      <SquareTerminal size={16} />
+      <span class="tip" role="tooltip">
+        <strong>Val-Patcher</strong>
+        <span>The lite .bat version: a single script that shows exactly what the swap does</span>
+      </span>
+    </button>
+    <span class="version" title="Not affiliated with Riot Games">v{settings.app?.version ?? "…"}</span>
+  </div>
 </aside>
 
 <style>
@@ -195,5 +224,77 @@
   .status-sub {
     font-size: 12px;
     color: var(--text-muted);
+  }
+
+  /* Logo follows the accent color. */
+  .brand {
+    --logo-color: var(--accent);
+  }
+
+  /* Footer links: small icons with a detail card on hover/focus. */
+  .links {
+    position: relative;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    margin-top: 8px;
+    padding: 0 2px;
+  }
+  .link {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: var(--radius-sm);
+    color: var(--text-faint);
+    transition: color 0.12s ease, background-color 0.12s ease;
+  }
+  .link:hover,
+  .link:focus-visible {
+    color: var(--text);
+    background: color-mix(in srgb, var(--text) 7%, transparent);
+  }
+  .tip {
+    position: absolute;
+    left: 0;
+    bottom: calc(100% + 8px);
+    width: 230px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 9px 11px;
+    border-radius: var(--radius);
+    background: var(--surface-2);
+    border: 1px solid var(--border-strong);
+    box-shadow: var(--shadow-lg);
+    text-align: left;
+    font-size: 12px;
+    line-height: 1.4;
+    color: var(--text-muted);
+    opacity: 0;
+    transform: translateY(4px);
+    pointer-events: none;
+    transition: opacity 0.14s ease, transform 0.14s ease;
+    transition-delay: 0s;
+  }
+  .tip strong {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .link:hover .tip,
+  .link:focus-visible .tip {
+    opacity: 1;
+    transform: none;
+    transition-delay: 0.25s;
+  }
+  .version {
+    margin-left: auto;
+    padding-right: 6px;
+    font-size: 11.5px;
+    color: var(--text-faint);
+    font-variant-numeric: tabular-nums;
   }
 </style>

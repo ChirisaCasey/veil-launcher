@@ -250,6 +250,11 @@
         <button type="button" class="btn sm danger" onclick={quit}><LogOut size={14} /> Quit</button>
       </SettingRow>
     </section>
+
+    <p class="disclaimer">
+      Veil only swaps a video file on disk: no injection, no overlay, no game memory access.
+      It is an independent project, not affiliated with or endorsed by Riot Games. VALORANT is a trademark of Riot Games, Inc.
+    </p>
   </div>
 {/if}
 
@@ -257,6 +262,13 @@
   .stack {
     display: grid;
     gap: 16px;
+  }
+  .disclaimer {
+    margin-top: 4px;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--text-faint);
+    text-align: center;
   }
   .section-title {
     display: flex;
