@@ -2,5 +2,5 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 fn main() {
-    veil_launcher_lib::run()
+    std::process::exit(veil_launcher_lib::run())
 }
