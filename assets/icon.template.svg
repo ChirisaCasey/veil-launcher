@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="base" x1="0" y1="0" x2="0.6" y2="1">
+      <stop offset="0" stop-color="#1d1736"/>
+      <stop offset="1" stop-color="#0a0912"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.62" cy="0.3" r="0.7">
+      <stop offset="0" stop-color="#7c5cff" stop-opacity="0.38"/>
+      <stop offset="1" stop-color="#7c5cff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="rim" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff" stop-opacity="0.16"/>
+      <stop offset="0.5" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="gBack" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#4a6dff"/>
+      <stop offset="1" stop-color="#36dcff"/>
+    </linearGradient>
+    <linearGradient id="gMid" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#a63cff"/>
+      <stop offset="1" stop-color="#ff4fc8"/>
+    </linearGradient>
+    <linearGradient id="gFront" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#5b3dff"/>
+      <stop offset="0.55" stop-color="#7c5cff"/>
+      <stop offset="1" stop-color="#b294ff"/>
+    </linearGradient>
+    <linearGradient id="shade" x1="0.75" y1="0" x2="0.25" y2="1">
+      <stop offset="0.35" stop-color="#0a0718" stop-opacity="0"/>
+      <stop offset="1" stop-color="#0a0718" stop-opacity="0.45"/>
+    </linearGradient>
+    <linearGradient id="sheen" gradientUnits="userSpaceOnUse" x1="240" y1="180" x2="780" y2="820">
+      <stop offset="0.34" stop-color="#fff" stop-opacity="0"/>
+      <stop offset="0.47" stop-color="#fff" stop-opacity="0.34"/>
+      <stop offset="0.51" stop-color="#fff" stop-opacity="0.34"/>
+      <stop offset="0.66" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+    <clipPath id="veils">
+      <path d="{{back}}"/>
+      <path d="{{mid}}"/>
+      <path d="{{front}}"/>
+    </clipPath>
+  </defs>
+
+  <path id="tile" d="M300 40H724C900 40 984 124 984 300V724C984 900 900 984 724 984H300C124 984 40 900 40 724V300C40 124 124 40 300 40Z" fill="url(#base)"/>
+  <path d="M300 40H724C900 40 984 124 984 300V724C984 900 900 984 724 984H300C124 984 40 900 40 724V300C40 124 124 40 300 40Z" fill="url(#glow)"/>
+  <path d="M300 42H724C898 42 982 126 982 300V724C982 898 898 982 724 982H300C126 982 42 898 42 724V300C42 126 126 42 300 42Z" fill="none" stroke="url(#rim)" stroke-width="4"/>
+
+  <path d="{{back}}" fill="url(#gBack)"/>
+  <path d="{{back}}" fill="url(#shade)"/>
+  <path d="{{mid}}" fill="url(#gMid)" opacity="0.94"/>
+  <path d="{{mid}}" fill="url(#shade)"/>
+  <path d="{{front}}" fill="url(#gFront)"/>
+  <path d="{{front}}" fill="url(#shade)" opacity="0.8"/>
+  <rect x="0" y="0" width="1024" height="1024" fill="url(#sheen)" clip-path="url(#veils)"/>
+</svg>
+

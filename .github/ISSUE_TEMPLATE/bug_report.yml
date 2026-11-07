@@ -1,0 +1,50 @@
+name: Bug report
+description: Something isn't working as expected.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for reporting! Please check existing issues first.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What did you expect, and what happened instead?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Select a video
+        2. Launch VALORANT from ...
+        3. ...
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Veil Launcher version
+      placeholder: "0.1.0"
+    validations:
+      required: true
+  - type: input
+    id: windows
+    attributes:
+      label: Windows version
+      placeholder: "Windows 11 23H2"
+  - type: dropdown
+    id: launch
+    attributes:
+      label: How did you launch the game?
+      options:
+        - From Veil Launcher
+        - From the Riot Client (background mode on)
+        - Other
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs / screenshots
+      description: Anything from the app's status message, notifications or `%APPDATA%\VeilLauncher`.
+      render: text
