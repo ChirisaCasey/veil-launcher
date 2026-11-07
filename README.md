@@ -73,7 +73,7 @@ The target lives in `<VALORANT>\live\ShooterGame\Content\Movies\Menu`. Veil writ
 
 ## Installation
 
-1. Download `Veil Launcher_x.y.z_x64-setup.exe` from the latest **[Release](https://github.com/ChirisaCasey/veil-launcher/releases/latest)**.
+1. Download `Veil.Launcher_x.y.z_x64-setup.exe` from the latest **[Release](https://github.com/ChirisaCasey/veil-launcher/releases/latest)**.
 2. Run it and follow the prompts (it installs for all users, so Windows asks for admin once).
 
 > [!IMPORTANT]
