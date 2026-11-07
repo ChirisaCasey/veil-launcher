@@ -34,15 +34,15 @@
 
   const TRIGGERS: { value: SwapTrigger; title: string; body: string; badge?: string }[] = [
     {
-      value: "riotClientClosed",
-      title: "After the Riot Client closes",
-      body: "Waits until Riot has finished checking your files and the client window closes. Safest choice.",
+      value: "gameStarted",
+      title: "As soon as VALORANT starts",
+      body: "Riot checks your files before the game starts, so Veil swaps right after VALORANT launches (plus the delay below).",
       badge: "Recommended",
     },
     {
-      value: "gameStarted",
-      title: "As soon as VALORANT starts",
-      body: "Swaps right when the game process appears. Faster, but if Riot is still checking files it may undo the swap.",
+      value: "riotClientClosed",
+      title: "After the Riot Client closes",
+      body: "Also waits for the Riot Client window to close. If your Riot Client stays open after launch, it swaps once VALORANT has been running for 15 seconds.",
     },
   ];
 

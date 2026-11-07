@@ -21,8 +21,10 @@ pub enum ThemeMode {
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Default)]
 #[serde(rename_all = "camelCase")]
 pub enum SwapTrigger {
-    #[default]
+    /// Also wait for the Riot Client window to close (falls back to a grace period if it stays open).
     RiotClientClosed,
+    /// Default: Riot's file check finishes before the game process starts, so swap right away.
+    #[default]
     GameStarted,
 }
 
@@ -59,7 +61,7 @@ impl Default for Settings {
             background_mode: false,
             start_with_windows: false,
             start_minimized: false,
-            swap_trigger: SwapTrigger::RiotClientClosed,
+            swap_trigger: SwapTrigger::GameStarted,
             swap_delay_secs: 2,
             keep_audio: false,
             notifications: true,
@@ -271,7 +273,7 @@ mod tests {
         assert_eq!(s.theme_mode, ThemeMode::System);
         assert_eq!(s.accent, "#7c5cff");
         assert!(s.enabled);
-        assert_eq!(s.swap_trigger, SwapTrigger::RiotClientClosed);
+        assert_eq!(s.swap_trigger, SwapTrigger::GameStarted);
         assert_eq!(s.swap_delay_secs, 2);
         assert!(!s.keep_audio);
         assert!(s.notifications);
@@ -284,7 +286,7 @@ mod tests {
 
         let v = serde_json::to_value(&s).unwrap();
         assert_eq!(v["themeMode"], "system");
-        assert_eq!(v["swapTrigger"], "riotClientClosed");
+        assert_eq!(v["swapTrigger"], "gameStarted");
         assert_eq!(v["swapDelaySecs"], 2);
         assert_eq!(v["selectedVideoId"], Value::Null);
     }

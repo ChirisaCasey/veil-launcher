@@ -46,6 +46,10 @@ pub const POLL_INTERVAL: Duration = Duration::from_millis(1500);
 /// Consecutive polls without the game before we consider it closed.
 pub const GONE_TICKS: u32 = 2;
 pub const RESTORE_RETRY: Duration = Duration::from_secs(15);
+/// With the `RiotClientClosed` trigger, a Riot Client set to stay open after launch would
+/// otherwise block the swap forever. Riot finishes its file check before it starts the game
+/// process, so once the game has been running this long the check is treated as done.
+pub const CLIENT_OPEN_GRACE: Duration = Duration::from_secs(15);
 
 #[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
 pub struct ProcSnapshot {
@@ -152,6 +156,8 @@ pub enum Action {
 pub struct Machine {
     pub phase: Phase,
     trigger_at: Option<Duration>,
+    /// When the game was first seen this session (for `CLIENT_OPEN_GRACE`).
+    game_since: Option<Duration>,
     absent_ticks: u32,
     /// Manual restore during this game session: don't re-swap until the game restarts.
     suppressed: bool,
@@ -168,6 +174,7 @@ impl Machine {
 
     fn reset_session(&mut self) {
         self.trigger_at = None;
+        self.game_since = None;
         self.suppressed = false;
         self.swap_failed = false;
         self.restore_retry_at = None;
@@ -243,13 +250,17 @@ impl Machine {
                         self.phase = Phase::Waiting;
                         self.trigger_at = None;
                     }
+                    let since = *self.game_since.get_or_insert(now);
                     if self.suppressed || self.swap_failed || !c.armed {
                         self.trigger_at = None;
                         return Action::None;
                     }
                     let ready = match c.trigger {
                         SwapTrigger::GameStarted => true,
-                        SwapTrigger::RiotClientClosed => !o.riot_client_ui,
+                        // Client closed, or it stays open but the game has clearly started.
+                        SwapTrigger::RiotClientClosed => {
+                            !o.riot_client_ui || now >= since + CLIENT_OPEN_GRACE
+                        }
                     };
                     if !ready {
                         self.trigger_at = None;
@@ -433,11 +444,26 @@ mod tests {
     }
 
     #[test]
-    fn riot_client_closed_never_fires_while_client_open() {
-        let script = vec![RC_GAME; 10];
-        let (actions, phases) = simulate(script, cfg(SwapTrigger::RiotClientClosed, 0));
-        assert!(actions.is_empty());
-        assert_eq!(*phases.last().unwrap(), Phase::Waiting);
+    fn riot_client_left_open_waits_for_grace_then_swaps() {
+        // Riot Client configured to stay open after launch: never closes.
+        let script = vec![RC_GAME; 25];
+        let grace = CLIENT_OPEN_GRACE.as_secs();
+        let (actions, phases) = simulate(script.clone(), cfg(SwapTrigger::RiotClientClosed, 0));
+        assert_eq!(actions, vec![(grace, Action::Swap)]);
+        assert_eq!(phases[grace as usize - 1], Phase::Waiting);
+        // The user's extra delay still applies on top of the grace period.
+        let (actions, _) = simulate(script, cfg(SwapTrigger::RiotClientClosed, 3));
+        assert_eq!(actions, vec![(grace + 3, Action::Swap)]);
+    }
+
+    #[test]
+    fn grace_period_restarts_with_each_game_session() {
+        // First session ends before the grace period; the next one starts its own clock.
+        let mut script = vec![RC_GAME; 5];
+        script.extend([RC, RC, RC]);
+        script.extend(vec![RC_GAME; 20]);
+        let (actions, _) = simulate(script, cfg(SwapTrigger::RiotClientClosed, 0));
+        assert_eq!(actions, vec![(8 + CLIENT_OPEN_GRACE.as_secs(), Action::Swap)]);
     }
 
     #[test]

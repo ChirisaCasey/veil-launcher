@@ -39,7 +39,7 @@ const state = {
     backgroundMode: false,
     startWithWindows: false,
     startMinimized: false,
-    swapTrigger: "riotClientClosed",
+    swapTrigger: "gameStarted",
     swapDelaySecs: 3,
     keepAudio: false,
     notifications: true,

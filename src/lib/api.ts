@@ -18,10 +18,10 @@ export type ThemeMode = "system" | "light" | "dark";
 
 /** When the watcher swaps the custom video in. */
 export type SwapTrigger =
-  /** Default: after VALORANT has started AND the Riot Client UI window process has closed (post file-check). */
-  | "riotClientClosed"
-  /** As soon as the VALORANT game process is detected (+ swapDelaySecs). */
-  | "gameStarted";
+  /** Default: as soon as the VALORANT game process is detected (+ swapDelaySecs). Riot's file check is already done by then. */
+  | "gameStarted"
+  /** Also wait for the Riot Client UI window to close; if it stays open, swap once the game has run for 15 s. */
+  | "riotClientClosed";
 
 export interface Settings {
   themeMode: ThemeMode;

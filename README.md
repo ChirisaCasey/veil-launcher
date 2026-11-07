@@ -95,7 +95,7 @@ Tip: turn on **Background mode** if you usually start the game from the Riot Cli
 
 | Setting | What it does |
 | --- | --- |
-| **Swap trigger** | When the swap happens. **After Riot Client closes** (default, recommended): waits until the game is running *and* the Riot Client UI has closed, i.e. after file verification. **When game starts**: swaps as soon as the VALORANT process appears. It's faster but riskier if verification is still running. |
+| **Swap trigger** | When the swap happens. **As soon as VALORANT starts** (default, recommended): Riot checks the game files before the game process starts, so Veil swaps right after launch. **After the Riot Client closes**: also waits for the Riot Client window to close; if your client stays open after launch, it swaps once the game has been running for 15 seconds. |
 | **Swap delay** | Extra wait (0–60 s) after the trigger fires. Raise it if the game ever repairs the file on a slow drive. |
 | **Background mode** | Keeps a lightweight watcher running so swaps also happen when the game is launched outside Veil. |
 | **Start with Windows** | Starts Veil at sign-in. Uses a scheduled task when admin rights are needed, otherwise a per-user startup entry. |
@@ -141,7 +141,7 @@ Use **Settings → Apps → Veil Launcher → Uninstall** (or the Start-menu uni
 <details>
 <summary><b>The game re-downloaded the video / shows the default background.</b></summary>
 
-Verification probably finished later than expected. Increase **Swap delay**, or keep the default **After Riot Client closes** trigger. You can also click **Apply now** while the game is running.
+Something put the original back after the swap. Increase **Swap delay** a few seconds, or switch the trigger to **After the Riot Client closes**. You can also click **Apply now** while the game is running.
 </details>
 
 ## Lite version

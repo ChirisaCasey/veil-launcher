@@ -42,7 +42,7 @@ Binary modes (see `src-tauri/src/cli.rs`): `--background` (start hidden, used by
   - `elevate`: UAC `runas` helper and the `schtasks` logon task.
   - `ffmpeg`: download, probe, transcode.
   - `library`: the user's video library.
-- **Swap lifecycle:** Riot Client UI (`Riot Client.exe`) → game (`VALORANT-Win64-Shipping.exe`) → trigger (`riotClientClosed` default, or `gameStarted`) + delay → swap → game exits → restore. `RiotClientServices.exe` stays alive in the background and is deliberately ignored.
+- **Swap lifecycle:** Riot Client UI (`Riot Client.exe`) → game (`VALORANT-Win64-Shipping.exe`) → trigger (`gameStarted` default, since Riot's file check finishes before the game process starts; or `riotClientClosed`, which also waits for the client window and falls back to `CLIENT_OPEN_GRACE` because many users keep the client open) + delay → swap → game exits → restore. `RiotClientServices.exe` stays alive in the background and is deliberately ignored.
 - **Backup invariant:** the backup is refreshed only when the target differs from the custom video (i.e. it is genuine, possibly a new patch). A custom video must never overwrite the backup.
 - **Elevation:** writes are attempted unelevated first; access denied → `--helper` via `runas`. The helper only writes `.mp4` files inside a `Movies\Menu` folder. Background/startup mode uses the HKCU Run key when the Menu folder is user-writable, otherwise an `ONLOGON /RL HIGHEST` scheduled task (`startup.rs`).
 - **Data dir:** `%APPDATA%\VeilLauncher\` (config.json, state.json, backups\, videos\, ffmpeg\, logs\). Config is plain JSON (not tauri-plugin-store), because helper/cleanup modes run without Tauri.
