@@ -9,15 +9,15 @@
 
   let canvas = $state<HTMLCanvasElement>();
 
-  const GAP = 12; // grid spacing (px): small, dense dots
-  const LEVELS = 16; // alpha buckets, so each frame is ~LEVELS fills instead of one per dot
+  const GAP = 22; // grid spacing (px)
+  const LEVELS = 14; // alpha buckets, so each frame is ~LEVELS fills instead of one per dot
 
   // Each wave is a band of dots that lights up around a flowing centerline.
   type Wave = { base: number; amp: number; freq: number; speed: number; phase: number; width: number; weight: number };
   const WAVES: Wave[] = [
-    { base: 0.52, amp: 0.1, freq: 1.0, speed: 0.06, phase: 0.0, width: 0.045, weight: 0.75 },
-    { base: 0.68, amp: 0.09, freq: 1.35, speed: -0.045, phase: 2.1, width: 0.04, weight: 0.9 },
-    { base: 0.84, amp: 0.07, freq: 0.85, speed: 0.05, phase: 4.2, width: 0.035, weight: 1 },
+    { base: 0.58, amp: 0.1, freq: 1.0, speed: 0.06, phase: 0.0, width: 0.09, weight: 0.8 },
+    { base: 0.75, amp: 0.08, freq: 1.4, speed: -0.045, phase: 2.1, width: 0.07, weight: 1 },
+    { base: 0.9, amp: 0.06, freq: 0.8, speed: 0.05, phase: 4.2, width: 0.06, weight: 0.9 },
   ];
 
   onMount(() => {
@@ -87,6 +87,10 @@
             const d = (v - centers[i]) / WAVES[i].width;
             I += Math.exp(-d * d) * WAVES[i].weight;
           }
+          // Faint ambient lift toward the top-right corner.
+          const dx = u - 0.9;
+          const dy = v + 0.05;
+          I += Math.exp(-(dx * dx + dy * dy) * 6) * 0.35;
           const level = Math.min(LEVELS - 1, Math.floor(Math.min(I, 1) * (LEVELS - 1)));
           buckets[level].push(x, y);
         }
@@ -96,9 +100,9 @@
         const pts = buckets[l];
         if (!pts.length) continue;
         const k = l / (LEVELS - 1);
-        // Off-wave dots are barely there; dots on a wave crest are bright and slightly larger.
-        const alpha = (0.035 + k * k * 0.6) * strength;
-        const r = 0.55 + k * 0.6;
+        // Small dots; brighter and slightly larger on a wave crest.
+        const alpha = (0.1 + k * 0.5) * strength;
+        const r = 0.5 + k * 0.6;
         ctx!.fillStyle = `rgba(${rgb}, ${alpha.toFixed(3)})`;
         ctx!.beginPath();
         for (let i = 0; i < pts.length; i += 2) {
