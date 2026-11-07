@@ -420,9 +420,8 @@
     align-items: center;
     text-align: center;
     padding: 56px 24px;
-    border: 1.5px dashed var(--border-strong);
-    border-radius: var(--radius-xl);
-    background: radial-gradient(ellipse at center, var(--accent-softer), transparent 70%);
+    border: 1px dashed var(--border-strong);
+    border-radius: var(--radius-lg);
   }
   .empty h2 {
     font-size: 19px;
@@ -449,35 +448,17 @@
     grid-area: 1 / 1;
   }
   .empty-icon {
-    width: 64px;
-    height: 64px;
-    border-radius: 20px;
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-lg);
     display: grid;
     place-items: center;
-    background: var(--accent-gradient);
-    color: var(--on-accent);
-    box-shadow: var(--accent-glow);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
   }
   .ring {
-    width: 100%;
-    height: 100%;
-    border-radius: 28px;
-    border: 1px solid var(--accent-border);
-    animation: ring 3s var(--ease-out) infinite;
-    opacity: 0;
-  }
-  .ring.r2 {
-    animation-delay: 1.5s;
-  }
-  @keyframes ring {
-    0% {
-      transform: scale(0.7);
-      opacity: 0.9;
-    }
-    100% {
-      transform: scale(1.35);
-      opacity: 0;
-    }
+    display: none;
   }
 
   /* Drop overlay */
@@ -486,8 +467,7 @@
     inset: var(--titlebar-h) 0 0 var(--sidebar-w);
     z-index: 40;
     padding: 20px;
-    background: color-mix(in srgb, var(--bg) 70%, transparent);
-    backdrop-filter: blur(8px);
+    background: color-mix(in srgb, var(--bg) 85%, transparent);
     pointer-events: none;
   }
   .drop-inner {
@@ -514,10 +494,8 @@
     display: grid;
     place-items: center;
     margin-bottom: 8px;
-    background: var(--accent-gradient);
-    color: var(--on-accent);
-    box-shadow: var(--accent-glow);
-    animation: bob 1.4s ease-in-out infinite;
+    background: var(--accent-soft);
+    color: var(--accent-text);
   }
   @keyframes bob {
     50% {

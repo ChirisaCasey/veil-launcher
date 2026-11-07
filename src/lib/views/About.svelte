@@ -68,7 +68,7 @@
     </ol>
   </section>
 
-  <section class="note callout accent">
+  <section class="note callout neutral">
     <EyeOff size={18} />
     <div>
       <strong>No injection, no overlay — just a file swap.</strong>
@@ -127,23 +127,11 @@
     position: relative;
   }
   .logo-glow {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    background: radial-gradient(circle, color-mix(in srgb, var(--accent) 40%, transparent), transparent 65%);
-    filter: blur(8px);
-    animation: glow 4s ease-in-out infinite;
-  }
-  @keyframes glow {
-    50% {
-      transform: scale(1.12);
-      opacity: 0.7;
-    }
+    display: none;
   }
   h1 {
-    font-size: 30px;
-    font-weight: 750;
-    letter-spacing: -0.03em;
+    font-size: 26px;
+    font-weight: 600;
   }
   .version {
     margin-top: 4px;
@@ -170,15 +158,6 @@
   .step {
     padding: 18px;
     border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-sm);
-    animation: rise 0.5s var(--ease-out) backwards;
-    animation-delay: calc(var(--i) * 90ms + 80ms);
-  }
-  @keyframes rise {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
   }
   .step-num {
     position: absolute;
@@ -192,17 +171,17 @@
   .step-icon {
     display: grid;
     place-items: center;
-    width: 44px;
-    height: 44px;
-    border-radius: 13px;
-    background: var(--accent-gradient);
-    color: var(--on-accent);
-    box-shadow: 0 8px 20px -8px color-mix(in srgb, var(--accent) 80%, transparent);
-    margin-bottom: 14px;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    margin-bottom: 12px;
   }
   .step h3 {
-    font-size: 15px;
-    font-weight: 650;
+    font-size: 14px;
+    font-weight: 600;
   }
   .step p {
     margin-top: 6px;

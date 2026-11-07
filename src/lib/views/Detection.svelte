@@ -371,7 +371,7 @@
     display: block;
     height: 100%;
     border-radius: inherit;
-    background: linear-gradient(90deg, var(--accent-solid), var(--accent));
+    background: var(--accent);
     transform-origin: left center;
     transition: width 0.6s var(--ease-out);
     animation: grow 0.8s var(--ease-out);

@@ -127,10 +127,7 @@
     inset: 0;
     z-index: -1;
     pointer-events: none;
-    background:
-      radial-gradient(900px 420px at 85% -10%, var(--bg-glow), transparent 70%),
-      radial-gradient(600px 300px at 0% 110%, color-mix(in srgb, var(--accent) 5%, transparent), transparent 70%);
-    transition: background 0.4s ease;
+    background: none;
   }
   .content {
     flex: 1;

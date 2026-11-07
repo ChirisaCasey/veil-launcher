@@ -21,7 +21,7 @@
     { view: "about", label: "About", icon: Info, hint: "Ctrl+5" },
   ];
 
-  const ITEM_STEP = 44;
+  const ITEM_STEP = 38; // item height 36 + gap 2
   const activeIndex = $derived(ITEMS.findIndex((i) => i.view === nav.view));
   const indicator = new Spring(0, { stiffness: 0.18, damping: 0.72 });
   $effect(() => {
@@ -34,7 +34,7 @@
 
 <aside class="sidebar">
   <div class="brand" data-tauri-drag-region>
-    <Logo size={30} />
+    <Logo size={22} />
     <span class="wordmark" data-tauri-drag-region>Veil <span>Launcher</span></span>
   </div>
 
@@ -62,7 +62,7 @@
   <div class="spacer" data-tauri-drag-region></div>
 
   <button type="button" class="status" onclick={() => nav.go("home")} aria-label="Status: {PHASES[phase].label}. Open Home">
-    <StatusOrb {phase} size={30} />
+    <StatusOrb {phase} size={28} />
     <div class="status-text">
       <div class="status-label">{PHASES[phase].label}</div>
       <div class="status-sub truncate">
@@ -93,25 +93,24 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    height: 72px;
-    padding: 12px 8px 4px;
+    height: 56px;
+    padding: 8px 12px 0;
     flex: none;
   }
   .wordmark {
     font-family: var(--font-display);
-    font-weight: 750;
-    font-size: 16px;
-    letter-spacing: -0.02em;
+    font-weight: 600;
+    font-size: 14.5px;
   }
   .wordmark span {
-    font-weight: 500;
+    font-weight: 400;
     color: var(--text-muted);
   }
   nav {
     position: relative;
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 2px;
     margin-top: 10px;
   }
   .indicator {
@@ -119,34 +118,32 @@
     left: 0;
     right: 0;
     top: 0;
-    height: 40px;
-    border-radius: 10px;
-    background: var(--accent-soft);
-    border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent);
+    height: 36px;
+    border-radius: var(--radius-sm);
+    background: color-mix(in srgb, var(--text) 7%, transparent);
     pointer-events: none;
   }
   .indicator::before {
     content: "";
     position: absolute;
-    left: -12px;
+    left: 0;
     top: 10px;
     bottom: 10px;
     width: 3px;
-    border-radius: 0 3px 3px 0;
+    border-radius: 3px;
     background: var(--accent);
-    box-shadow: 0 0 10px var(--accent);
   }
   .item {
     position: relative;
     display: flex;
     align-items: center;
     gap: 12px;
-    height: 40px;
+    height: 36px;
     padding: 0 12px;
-    border-radius: 10px;
+    border-radius: var(--radius-sm);
     color: var(--text-muted);
-    font-weight: 550;
-    font-size: 14px;
+    font-weight: 500;
+    font-size: 13.5px;
     text-align: left;
     transition: color 0.15s ease, background-color 0.15s ease;
   }
@@ -156,9 +153,6 @@
   }
   .item.active {
     color: var(--text);
-  }
-  .item.active :global(svg) {
-    color: var(--accent-text);
   }
   .count {
     margin-left: auto;

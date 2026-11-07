@@ -53,7 +53,6 @@
   .switch.on {
     background: var(--accent-solid);
     border-color: transparent;
-    box-shadow: 0 0 16px -4px color-mix(in srgb, var(--accent) 70%, transparent);
   }
   .switch:disabled {
     opacity: 0.5;

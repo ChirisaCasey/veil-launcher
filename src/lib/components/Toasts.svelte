@@ -58,7 +58,6 @@
     padding: 12px 10px 12px 14px;
     border-radius: var(--radius);
     background: var(--surface-glass);
-    backdrop-filter: blur(16px) saturate(1.3);
     border: 1px solid var(--border-strong);
     box-shadow: var(--shadow-lg);
     position: relative;

@@ -95,15 +95,11 @@
       border-color 0.2s ease;
   }
   .vcard:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
     border-color: var(--border-strong);
   }
   .vcard.selected {
     border-color: var(--accent);
-    box-shadow:
-      0 0 0 1px var(--accent),
-      0 12px 32px -12px color-mix(in srgb, var(--accent) 60%, transparent);
+    box-shadow: 0 0 0 1px var(--accent);
   }
   .thumb {
     position: relative;
@@ -147,8 +143,7 @@
     display: grid;
     place-items: center;
     border: 2px solid rgba(255, 255, 255, 0.75);
-    background: rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(6px);
+    background: rgba(0, 0, 0, 0.45);
     color: var(--on-accent);
     opacity: 0;
     transform: scale(0.85);
@@ -163,7 +158,6 @@
   .selected .radio {
     background: var(--accent-solid);
     border-color: var(--accent-solid);
-    box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 35%, transparent);
   }
   .info {
     display: flex;

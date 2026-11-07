@@ -86,7 +86,7 @@
       <SettingRow label="Theme" description="System follows your Windows light/dark setting.">
         <Segmented label="Theme" options={THEME_OPTIONS} value={s.themeMode} onchange={(v) => set("themeMode", v)} />
       </SettingRow>
-      <SettingRow label="Accent color" description="Used for buttons, highlights and the status glow.">
+      <SettingRow label="Accent color" description="Used for the main button, toggles and selection.">
         <div class="swatches" role="radiogroup" aria-label="Accent color">
           {#each ACCENT_PRESETS as p (p.value)}
             {@const active = p.value.toLowerCase() === theme.accent.toLowerCase()}

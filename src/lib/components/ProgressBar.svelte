@@ -50,16 +50,7 @@
     position: absolute;
     inset: 0 auto 0 0;
     border-radius: inherit;
-    background: linear-gradient(90deg, var(--accent-solid), var(--accent));
-    box-shadow: 0 0 12px -2px color-mix(in srgb, var(--accent) 70%, transparent);
-  }
-  .fill::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
-    transform: translateX(-100%);
-    animation: sheen 1.6s ease-in-out infinite;
+    background: var(--accent);
   }
   .success .fill {
     background: var(--success);

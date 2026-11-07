@@ -209,10 +209,15 @@ impl DataDirs {
 /// Read a JSON file. `Ok(None)` if it does not exist.
 pub fn read_json<T: DeserializeOwned>(path: &Path) -> Result<Option<T>> {
     match fs::read(path) {
-        Ok(bytes) => Ok(Some(
-            serde_json::from_slice(&bytes)
-                .with_context(|| format!("parsing {}", path.display()))?,
-        )),
+        Ok(bytes) => {
+            // Tolerate a UTF-8 BOM (e.g. a file hand-edited in Notepad or written by
+            // Windows PowerShell), so it doesn't silently reset settings or the swap journal.
+            let body = bytes.strip_prefix(b"\xEF\xBB\xBF").unwrap_or(&bytes);
+            Ok(Some(
+                serde_json::from_slice(body)
+                    .with_context(|| format!("parsing {}", path.display()))?,
+            ))
+        }
         Err(e) if e.kind() == std::io::ErrorKind::NotFound => Ok(None),
         Err(e) => Err(e).with_context(|| format!("reading {}", path.display())),
     }
@@ -241,6 +246,15 @@ pub fn now_ms() -> i64 {
 mod tests {
     use super::*;
     use serde_json::json;
+
+    #[test]
+    fn read_json_accepts_utf8_bom() {
+        let dir = tempfile::tempdir().unwrap();
+        let p = dir.path().join("c.json");
+        fs::write(&p, b"\xEF\xBB\xBF{\"accent\":\"#ec4899\"}").unwrap();
+        let v: serde_json::Value = read_json(&p).unwrap().unwrap();
+        assert_eq!(v["accent"], "#ec4899");
+    }
 
     #[test]
     fn defaults_match_contract() {
