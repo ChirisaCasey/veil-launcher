@@ -29,9 +29,11 @@ Veil Launcher is a small Windows tray app. It puts your own video in place of VA
 
 <div align="center">
 
-| Home | Videos | Settings |
-| :---: | :---: | :---: |
-| <img src="docs/screenshots/home.png" alt="Home screen" width="280"> | <img src="docs/screenshots/videos.png" alt="Video library" width="280"> | <img src="docs/screenshots/settings.png" alt="Settings" width="280"> |
+<img src="docs/screenshots/home.png" alt="Home screen with launch button, live status and quick stats" width="820">
+
+| Smart detection | Settings |
+| :---: | :---: |
+| <img src="docs/screenshots/detection.png" alt="Detection view ranking menu videos, with the Homescreen file selected over a seasonal cinematic" width="400"> | <img src="docs/screenshots/settings.png" alt="Settings with theme, accent color and background options" width="400"> |
 
 </div>
 
