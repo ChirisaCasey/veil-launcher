@@ -165,6 +165,8 @@ export interface NotifyEvent {
 export const EVENTS = {
   /** payload: Status */
   status: "status-changed",
+  /** payload: Settings — sent when settings change outside the UI (e.g. tray "Custom background" toggle) */
+  settings: "settings-changed",
   /** payload: ProgressEvent */
   progress: "progress",
   /** payload: string route, e.g. "settings" — sent by tray menu items */

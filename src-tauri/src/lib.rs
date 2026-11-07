@@ -71,6 +71,23 @@ impl EventSink for TauriSink {
     }
 }
 
+/// When running elevated (background scheduled task), Windows UIPI drops messages from
+/// unelevated processes, so a normal Start-menu launch couldn't reach this instance and the
+/// window would never appear. tauri-plugin-single-instance hands off via WM_COPYDATA; allow it.
+fn allow_unelevated_handoff() {
+    #[cfg(windows)]
+    if core::elevate::is_elevated() {
+        use windows_sys::Win32::UI::WindowsAndMessaging::{
+            ChangeWindowMessageFilter, MSGFLT_ADD, WM_COPYDATA,
+        };
+        // SAFETY: plain Win32 call with constant arguments.
+        let ok = unsafe { ChangeWindowMessageFilter(WM_COPYDATA, MSGFLT_ADD) };
+        if ok == 0 {
+            log::warn!("could not allow WM_COPYDATA from unelevated processes");
+        }
+    }
+}
+
 /// Entry point. Returns the process exit code.
 pub fn run() -> i32 {
     let args = cli::parse(std::env::args().skip(1));
@@ -96,6 +113,7 @@ pub fn run() -> i32 {
     };
     let start_hidden = args.background || args.minimized || engine.settings().start_minimized;
     let setup_engine = engine.clone();
+    allow_unelevated_handoff();
 
     let result = tauri::Builder::default()
         // Must be first: a second launch focuses the existing instance instead.

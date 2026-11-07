@@ -1,4 +1,4 @@
-import { EVENTS, on, type ProgressEvent } from "$lib/api";
+import { EVENTS, on, type ProgressEvent, type Settings } from "$lib/api";
 import { detection } from "./detection.svelte";
 import { ffmpeg } from "./ffmpeg.svelte";
 import { nav } from "./navigation.svelte";
@@ -16,6 +16,7 @@ export async function initApp(): Promise<() => void> {
     toasts.listen(),
     nav.listen(),
     status.listen(),
+    on<Settings>(EVENTS.settings, (s) => settings.set(s)),
     on<ProgressEvent>(EVENTS.progress, (e) => {
       if (e.jobId === "ffmpeg") ffmpeg.onProgress(e);
       else videos.onProgress(e);

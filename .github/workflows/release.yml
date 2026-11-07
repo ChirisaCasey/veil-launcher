@@ -33,7 +33,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # Builds the UI (beforeBuildCommand), the app and the NSIS + MSI bundles,
+      # Builds the UI (beforeBuildCommand), the app and the NSIS installer,
       # then uploads them to a draft GitHub release.
       - name: Build and release
         uses: tauri-apps/tauri-action@v0
@@ -46,10 +46,7 @@ jobs:
           releaseBody: |
             ## Install
 
-            Download one of the installers below:
-
-            - **`*_x64-setup.exe`** (NSIS, recommended)
-            - **`*_x64_en-US.msi`** (MSI, for managed or scripted installs)
+            Download **`Veil.Launcher_*_x64-setup.exe`** below and run it.
 
             Windows 10/11 (64-bit). WebView2 is installed automatically if missing.
 

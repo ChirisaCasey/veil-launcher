@@ -72,10 +72,8 @@ The target lives in `<VALORANT>\live\ShooterGame\Content\Movies\Menu`. Veil writ
 
 ## Installation
 
-1. Download the latest installer from **[Releases](https://github.com/veil-launcher/veil-launcher/releases/latest)**:
-   - `Veil Launcher_x.y.z_x64-setup.exe` (NSIS, recommended), or
-   - `Veil Launcher_x.y.z_x64_en-US.msi` (MSI, for managed or scripted installs).
-2. Run it and follow the prompts.
+1. Download `Veil Launcher_x.y.z_x64-setup.exe` from the latest **[Release](https://github.com/veil-launcher/veil-launcher/releases/latest)**.
+2. Run it and follow the prompts (it installs for all users, so Windows asks for admin once).
 
 > [!IMPORTANT]
 > Builds are not code-signed yet, so Windows SmartScreen may show *"Windows protected your PC"*. Click **More info**, then **Run anyway**. You can check the source and the release workflow in this repo before running it.

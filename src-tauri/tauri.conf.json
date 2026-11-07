@@ -43,7 +43,7 @@
   },
   "bundle": {
     "active": true,
-    "targets": ["nsis", "msi"],
+    "targets": ["nsis"],
     "publisher": "Veil Launcher",
     "shortDescription": "Custom VALORANT menu backgrounds, swapped safely.",
     "longDescription": "Veil Launcher swaps the VALORANT main-menu background video for your own after Riot's file check and restores the original when the game closes. File swap only; nothing is injected into the game.",
