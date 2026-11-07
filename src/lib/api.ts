@@ -23,14 +23,10 @@ export type SwapTrigger =
   /** As soon as the VALORANT game process is detected (+ swapDelaySecs). */
   | "gameStarted";
 
-/** Animated app background style. */
-export type BackdropStyle = "waves" | "ripple" | "shimmer" | "beam" | "lines" | "ribbon" | "off";
-
 export interface Settings {
   themeMode: ThemeMode;
   /** Accent color as #rrggbb. */
   accent: string;
-  backdrop: BackdropStyle;
   /** Library id of the selected custom video, or null. */
   selectedVideoId: string | null;
   /** Master switch: apply the custom background on game launch. */

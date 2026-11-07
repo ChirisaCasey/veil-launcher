@@ -2,7 +2,7 @@
   import { onMount } from "svelte";
   import { fade, fly } from "svelte/transition";
   import { cubicOut } from "svelte/easing";
-  import { initApp, nav, settings, theme } from "$lib/stores";
+  import { initApp, nav, theme } from "$lib/stores";
   import { VIEWS } from "$lib/stores/navigation.svelte";
   import { ms } from "$lib/motion";
   import Sidebar from "$lib/components/Sidebar.svelte";
@@ -70,7 +70,7 @@
 <div class="app">
   <Sidebar />
   <div class="main">
-    <Backdrop variant={settings.value?.backdrop ?? "waves"} />
+    <Backdrop />
     <TitleBar />
     <main class="content" bind:this={scroller}>
       <div class="views">

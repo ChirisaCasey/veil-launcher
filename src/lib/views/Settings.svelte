@@ -1,6 +1,5 @@
 <script lang="ts">
-  import { api, type BackdropStyle, type Settings, type SwapTrigger, type ThemeMode } from "$lib/api";
-  import Backdrop from "$lib/components/Backdrop.svelte";
+  import { api, type Settings, type SwapTrigger, type ThemeMode } from "$lib/api";
   import { ffmpeg, settings, status, theme, toasts } from "$lib/stores";
   import { ACCENT_PRESETS, FFMPEG_DOWNLOAD_MB } from "$lib/constants";
   import { revealPath } from "$lib/platform";
@@ -45,16 +44,6 @@
       title: "As soon as VALORANT starts",
       body: "Swaps right when the game process appears. Faster, but if Riot is still checking files it may undo the swap.",
     },
-  ];
-
-  const BACKDROPS: { value: BackdropStyle; label: string }[] = [
-    { value: "ribbon", label: "Ribbon" },
-    { value: "waves", label: "Dot waves" },
-    { value: "ripple", label: "Ripple" },
-    { value: "shimmer", label: "Shimmer" },
-    { value: "beam", label: "Sweep" },
-    { value: "lines", label: "Contours" },
-    { value: "off", label: "Off" },
   ];
 
   const isPreset = $derived(ACCENT_PRESETS.some((p) => p.value.toLowerCase() === theme.accent.toLowerCase()));
@@ -126,30 +115,6 @@
             <Pipette size={14} />
           </label>
           <span class="hex mono selectable">{theme.accent.toUpperCase()}</span>
-        </div>
-      </SettingRow>
-      <SettingRow label="Background" description="Animated pattern behind the app, in your accent color." stacked>
-        <div class="backdrops" role="radiogroup" aria-label="Background">
-          {#each BACKDROPS as b (b.value)}
-            {@const active = (s.backdrop ?? "waves") === b.value}
-            <button
-              type="button"
-              class="bd"
-              class:active
-              role="radio"
-              aria-checked={active}
-              onclick={() => set("backdrop", b.value)}
-            >
-              <span class="bd-preview">
-                {#if b.value === "off"}
-                  <span class="bd-off">None</span>
-                {:else}
-                  <Backdrop variant={b.value} compact />
-                {/if}
-              </span>
-              <span class="bd-label">{b.label}</span>
-            </button>
-          {/each}
         </div>
       </SettingRow>
     </section>
@@ -297,56 +262,6 @@
   .stack {
     display: grid;
     gap: 16px;
-  }
-  .backdrops {
-    display: grid;
-    grid-template-columns: repeat(7, minmax(0, 1fr));
-    gap: 10px;
-  }
-  .bd {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    text-align: left;
-  }
-  .bd-preview {
-    position: relative;
-    isolation: isolate;
-    display: block;
-    aspect-ratio: 16 / 10;
-    border-radius: var(--radius);
-    overflow: hidden;
-    background: var(--bg);
-    border: 1px solid var(--border-strong);
-    transition: border-color 0.12s ease, box-shadow 0.12s ease;
-  }
-  .bd:hover .bd-preview {
-    border-color: var(--text-faint);
-  }
-  .bd.active .bd-preview {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 1px var(--accent);
-  }
-  .bd-off {
-    position: absolute;
-    inset: 0;
-    display: grid;
-    place-items: center;
-    font-size: 12px;
-    color: var(--text-faint);
-  }
-  .bd-label {
-    font-size: 12.5px;
-    color: var(--text-muted);
-  }
-  .bd.active .bd-label {
-    color: var(--text);
-    font-weight: 500;
-  }
-  @media (max-width: 1000px) {
-    .backdrops {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
   }
   .disclaimer {
     margin-top: 4px;

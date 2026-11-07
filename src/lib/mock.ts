@@ -32,7 +32,6 @@ const state = {
   settings: {
     themeMode: "system",
     accent: "#7c5cff",
-    backdrop: "waves",
     selectedVideoId: "vid_neon",
     enabled: true,
     pinnedTarget: null,

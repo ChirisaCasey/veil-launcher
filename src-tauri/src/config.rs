@@ -26,20 +26,6 @@ pub enum SwapTrigger {
     GameStarted,
 }
 
-/// Animated app background style (purely cosmetic, rendered by the UI).
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Default)]
-#[serde(rename_all = "camelCase")]
-pub enum Backdrop {
-    #[default]
-    Waves,
-    Ripple,
-    Shimmer,
-    Beam,
-    Lines,
-    Ribbon,
-    Off,
-}
-
 pub const MAX_SWAP_DELAY_SECS: u32 = 60;
 pub const DEFAULT_ACCENT: &str = "#7c5cff";
 
@@ -48,7 +34,6 @@ pub const DEFAULT_ACCENT: &str = "#7c5cff";
 pub struct Settings {
     pub theme_mode: ThemeMode,
     pub accent: String,
-    pub backdrop: Backdrop,
     pub selected_video_id: Option<String>,
     pub enabled: bool,
     pub pinned_target: Option<String>,
@@ -67,7 +52,6 @@ impl Default for Settings {
         Self {
             theme_mode: ThemeMode::System,
             accent: DEFAULT_ACCENT.to_string(),
-            backdrop: Backdrop::Waves,
             selected_video_id: None,
             enabled: true,
             pinned_target: None,
@@ -264,13 +248,12 @@ mod tests {
     use serde_json::json;
 
     #[test]
-    fn backdrop_defaults_and_merges() {
-        // Older config files have no "backdrop" key.
-        let s: Settings = serde_json::from_value(json!({ "accent": "#ec4899" })).unwrap();
-        assert_eq!(s.backdrop, Backdrop::Waves);
-        let s = s.merged(&json!({ "backdrop": "ripple" })).unwrap();
-        assert_eq!(s.backdrop, Backdrop::Ripple);
-        assert!(s.merged(&json!({ "backdrop": "nope" })).is_err());
+    fn stale_keys_in_config_are_ignored() {
+        // Builds that briefly had a background picker saved a "backdrop" key; it must not
+        // break loading (which would reset every setting to defaults).
+        let s: Settings =
+            serde_json::from_value(json!({ "accent": "#ec4899", "backdrop": "lines" })).unwrap();
+        assert_eq!(s.accent, "#ec4899");
     }
 
     #[test]
