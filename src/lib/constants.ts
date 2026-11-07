@@ -1,5 +1,4 @@
-// TODO: replace with the real repository URL once the project is published.
-export const REPO_URL = "https://github.com/";
+export const REPO_URL = "https://github.com/ChirisaCasey/veil-launcher";
 
 /** The lightweight .bat alternative. */
 export const VAL_PATCHER_URL = "https://github.com/ChirisaCasey/Val-Patcher";

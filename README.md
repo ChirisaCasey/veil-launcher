@@ -1,4 +1,3 @@
-<!-- Replace veil-launcher/veil-launcher with your GitHub OWNER/REPO throughout this file. -->
 
 <div align="center">
 
@@ -6,15 +5,15 @@
 
 <br>
 
-[![Latest release](https://img.shields.io/github/v/release/veil-launcher/veil-launcher?style=flat-square&color=7c5cff&label=release)](https://github.com/veil-launcher/veil-launcher/releases/latest)
-[![Downloads](https://img.shields.io/github/downloads/veil-launcher/veil-launcher/total?style=flat-square&color=c13bff)](https://github.com/veil-launcher/veil-launcher/releases)
-[![License: MIT](https://img.shields.io/github/license/veil-launcher/veil-launcher?style=flat-square&color=36dcff)](LICENSE)
+[![Latest release](https://img.shields.io/github/v/release/ChirisaCasey/veil-launcher?style=flat-square&color=7c5cff&label=release)](https://github.com/ChirisaCasey/veil-launcher/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/ChirisaCasey/veil-launcher/total?style=flat-square&color=c13bff)](https://github.com/ChirisaCasey/veil-launcher/releases)
+[![License: MIT](https://img.shields.io/github/license/ChirisaCasey/veil-launcher?style=flat-square&color=36dcff)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows%2010%20%7C%2011-0078D6?style=flat-square&logo=windows&logoColor=white)](#installation)
 [![Built with Tauri](https://img.shields.io/badge/built%20with-Tauri%202-24C8DB?style=flat-square&logo=tauri&logoColor=white)](https://tauri.app)
 
 **Swap VALORANT's main-menu background for any video you like, automatically and safely.**
 
-[Download](https://github.com/veil-launcher/veil-launcher/releases/latest) · [Features](#features) · [How it works](#how-it-works) · [FAQ](#faq) · [Build from source](#build-from-source)
+[Download](https://github.com/ChirisaCasey/veil-launcher/releases/latest) · [Features](#features) · [How it works](#how-it-works) · [FAQ](#faq) · [Build from source](#build-from-source)
 
 </div>
 
@@ -74,7 +73,7 @@ The target lives in `<VALORANT>\live\ShooterGame\Content\Movies\Menu`. Veil writ
 
 ## Installation
 
-1. Download `Veil Launcher_x.y.z_x64-setup.exe` from the latest **[Release](https://github.com/veil-launcher/veil-launcher/releases/latest)**.
+1. Download `Veil Launcher_x.y.z_x64-setup.exe` from the latest **[Release](https://github.com/ChirisaCasey/veil-launcher/releases/latest)**.
 2. Run it and follow the prompts (it installs for all users, so Windows asks for admin once).
 
 > [!IMPORTANT]
@@ -154,7 +153,7 @@ Prefer a single script? **[Val-Patcher](https://github.com/ChirisaCasey/Val-Patc
 **Prerequisites:** [Node.js 20+](https://nodejs.org), [Rust stable](https://rustup.rs), [Microsoft C++ Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/) ("Desktop development with C++") and [WebView2](https://developer.microsoft.com/microsoft-edge/webview2/). See the [Tauri prerequisites](https://tauri.app/start/prerequisites/).
 
 ```powershell
-git clone https://github.com/veil-launcher/veil-launcher.git
+git clone https://github.com/ChirisaCasey/veil-launcher.git
 cd veil-launcher
 npm install
 
@@ -187,7 +186,7 @@ docs/                Screenshots and docs
 
 Issues and pull requests are welcome.
 
-1. Open an [issue](https://github.com/veil-launcher/veil-launcher/issues) first for larger changes.
+1. Open an [issue](https://github.com/ChirisaCasey/veil-launcher/issues) first for larger changes.
 2. Keep the hard rule: **file swapping only**. No injection, hooking, overlays or memory access.
 3. Make sure `npm run check`, `cargo test` and `cargo clippy -- -D warnings` pass.
 4. If you change the command surface, update `src/lib/api.ts` and the Rust side together.
